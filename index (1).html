@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Thanwa E-Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --red: #B5121B;
+    --red-dark: #8f0e15;
+    --gold: #F4C542;
+    --white: #ffffff;
+    --ink: #222222;
+    --muted: #5b5b60;
+    --paper: #f5f5f6;
+    --line: #dedee1;
+    --ph-bg: #fff1bd;
+    --ph-ink: #5c4600;
+    --display: "Prompt", "Sarabun", system-ui, sans-serif;
+    --body: "Sarabun", system-ui, "Segoe UI", Tahoma, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  img { max-width: 100%; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.75; }
+  h1, h2, h3, p, ul, dl, dd, figure { margin: 0; }
+  h1, h2, h3 { font-family: var(--display); line-height: 1.25; text-wrap: balance; }
+  a { color: var(--red); }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .in { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .sr { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+
+  /* nav */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--white); z-index: 40; }
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--white); border-bottom: 1px solid var(--line); }
+  .bar .in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .brand { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: .08em; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .brand b { display: inline-block; width: 12px; height: 12px; background: var(--red); }
+  #nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; }
+  #nav a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: .95rem; padding: 6px 0; border-bottom: 2px solid transparent; }
+  #nav a:hover { color: var(--red); border-bottom-color: var(--red); }
+  #menu { display: none; background: none; border: 1px solid var(--line); padding: 8px 14px; font: inherit; font-weight: 700; cursor: pointer; color: var(--ink); }
+  @media (max-width: 1040px) {
+    #menu { display: block; }
+    #nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--white); border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-left, 0px)) 16px; }
+    #nav.open { display: block; }
+    #nav ul { flex-direction: column; gap: 0; }
+    #nav a { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  }
+
+  /* hero */
+  .hero { position: relative; background: var(--ink); color: var(--white); overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(34,34,34,.94) 0%, rgba(34,34,34,.6) 55%, rgba(34,34,34,.15) 100%); }
+  .hero .in { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding-block: 72px 88px; }
+  .hero .in > * { min-width: 0; }
+  .meta { font-size: .9rem; letter-spacing: .06em; color: #d8d8da; margin-bottom: 18px; }
+  .meta span { color: var(--gold); font-weight: 700; }
+  h1 .hi { display: block; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 500; letter-spacing: .08em; }
+  h1 .nm { display: block; font-size: clamp(3rem, 11vw, 6rem); font-weight: 700; color: var(--gold); letter-spacing: -.01em; line-height: 1.05; }
+  .th-name { font-family: var(--display); font-size: clamp(1.3rem, 3.5vw, 1.8rem); font-weight: 500; margin-top: 12px; }
+  .role { margin-top: 6px; font-family: var(--display); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; font-size: .95rem; color: var(--gold); }
+  .tag { margin-top: 20px; max-width: 30em; font-size: 1.1rem; color: #ececee; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .btn { display: inline-block; font: inherit; font-family: var(--display); font-weight: 600; font-size: .95rem; padding: 12px 24px; border: 2px solid var(--gold); background: var(--gold); color: var(--ink); text-decoration: none; cursor: pointer; transition: transform .2s ease, background .2s ease, color .2s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.ghost { background: transparent; color: var(--white); border-color: rgba(255,255,255,.7); }
+  .btn.ghost:hover { background: var(--white); color: var(--ink); }
+  .photo { position: relative; width: 100%; max-width: 380px; aspect-ratio: 4 / 5; justify-self: center; }
+  .photo::before { content: ""; position: absolute; inset: 16px -16px -16px 16px; border: 3px solid var(--gold); }
+  .photo-in { position: absolute; inset: 0; background: #3b3b3e; overflow: hidden; }
+  .photo-in img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-in svg { width: 100%; height: 100%; display: block; }
+  
+  /* image action buttons */
+  .img-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .addbtn { display: inline-block; font-family: var(--display); font-weight: 600; font-size: .85rem; padding: 8px 14px; background: var(--ink); color: var(--gold); border: 1px solid var(--gold); cursor: pointer; text-align: center; }
+  .addbtn.sec-btn { background: var(--white); color: var(--ink); border-color: var(--ink); }
+  .addbtn:hover { opacity: .9; }
+  .addbtn:focus-within { outline: 3px solid var(--gold); outline-offset: 2px; }
+  
+  .photo .photo-actions { position: absolute; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--gold); }
+  .photo .photo-actions .addbtn { border: 0; padding: 11px 6px; font-size: .8rem; }
+  .photo .photo-actions .addbtn:first-child { border-right: 1px solid var(--gold); }
+  .photo .photo-actions .addbtn.sec-btn { background: #2d2d30; color: var(--white); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .growth { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.4s ease-out .3s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+  }
+  @media (max-width: 820px) { .hero .in { grid-template-columns: 1fr; padding-block: 48px 64px; } .photo { max-width: 300px; justify-self: start; } }
+
+  /* sections */
+  .sec { padding-block: 84px; }
+  .sec.alt { background: var(--paper); }
+  .eyebrow { font-family: var(--display); font-weight: 600; font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+  .sec h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); margin-bottom: 36px; }
+  .card { background: var(--white); border: 1px solid var(--line); padding: 24px; transition: transform .25s ease, border-color .25s ease; }
+  .card:hover { transform: translateY(-3px); border-color: var(--red); }
+  .card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .card h3 small { display: block; font-family: var(--body); font-weight: 500; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .grid2 > * { min-width: 0; }
+  .ph { display: inline-block; min-width: 4ch; background: var(--ph-bg); color: var(--ph-ink); padding: 0 6px; border-radius: 2px; }
+  body.editing [data-edit] { outline: 1px dashed var(--red); outline-offset: 2px; cursor: text; }
+  .vision body.editing [data-edit] { outline-color: var(--gold); }
+
+  /* about */
+  .about { display: grid; grid-template-columns: 1fr 1.5fr; gap: 28px; align-items: start; }
+  .about > * { min-width: 0; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; background: var(--ink); color: var(--white); padding: 28px; }
+  .facts dt { color: var(--gold); font-weight: 700; }
+  .about-blocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .about-blocks > * { min-width: 0; }
+  @media (max-width: 820px) { .about { grid-template-columns: 1fr; } }
+
+  /* timeline */
+  .tl { list-style: none; padding: 0; margin: 0; position: relative; max-width: 760px; }
+  .tl::before { content: ""; position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--line); }
+  .tl li { position: relative; padding: 0 0 32px 44px; }
+  .tl li::before { content: ""; position: absolute; left: 0; top: 9px; width: 16px; height: 16px; background: var(--white); border: 3px solid var(--red); border-radius: 50%; }
+  .tl li.now::before { background: var(--red); }
+  .tl .when { font-family: var(--display); font-weight: 600; font-size: .85rem; letter-spacing: .1em; color: var(--red); }
+  .tl h3 { font-size: 1.2rem; margin: 2px 0 4px; }
+
+  /* gallery */
+  .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 14px 0; }
+  .gal-grid figure { position: relative; aspect-ratio: 4 / 3; background: var(--paper); overflow: hidden; }
+  .gal-grid img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; transition: transform .3s ease; }
+  .gal-grid img:hover { transform: scale(1.04); }
+  .rm { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border: 0; background: rgba(34,34,34,.85); color: var(--white); font-size: 1.1rem; line-height: 1; cursor: pointer; }
+  .gal-empty { grid-column: 1 / -1; border: 2px dashed var(--line); padding: 22px 16px; color: var(--muted); text-align: center; font-size: .95rem; }
+  .cert .gal-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .cert .gal-grid figure { aspect-ratio: 3 / 2; }
+  .cert .gal-empty { padding: 56px 16px; }
+  .hint { color: var(--muted); font-size: .92rem; }
+
+  /* skills */
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .skills > * { min-width: 0; }
+  .skill h3 { font-size: 1.25rem; color: var(--red); display: flex; align-items: center; gap: 10px; }
+  .skill h3::before { content: ""; width: 10px; height: 10px; background: var(--gold); flex: none; }
+  .skill .thai { font-weight: 700; margin-bottom: 6px; }
+  .skill p { color: var(--muted); font-size: .95rem; }
+
+  /* vision */
+  .vision { background: var(--red); color: var(--white); position: relative; overflow: hidden; }
+  .vision .eyebrow { color: var(--gold); }
+  .vision h2 { font-size: clamp(2.2rem, 8vw, 4.6rem); line-height: 1.05; letter-spacing: -.01em; margin-bottom: 28px; }
+  .vision h2 span { color: var(--gold); display: block; }
+  .vision .lead { max-width: 40em; font-size: 1.15rem; }
+  .vision-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 44px; }
+  .vision-cols > * { min-width: 0; border-top: 1px solid rgba(255,255,255,.45); padding-top: 16px; }
+  .vision-cols h3 { color: var(--gold); font-size: 1.1rem; margin-bottom: 6px; }
+  .vision .in { position: relative; z-index: 1; }
+  .vision .deco { position: absolute; right: 0; bottom: 0; width: min(520px, 70%); opacity: .14; }
+
+  /* contact */
+  .contact { background: var(--ink); color: var(--white); }
+  .contact .eyebrow { color: var(--gold); }
+  .rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .rows > * { min-width: 0; border: 1px solid rgba(255,255,255,.25); padding: 18px 20px; }
+  .rows dt { color: var(--gold); font-family: var(--display); font-weight: 600; font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; }
+  .rows dd { overflow-wrap: anywhere; }
+  footer { background: #151515; color: #b9b9bd; padding-block: 22px; font-size: .9rem; }
+
+  /* lightbox, toast, edit button */
+  #lb { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.9); display: grid; place-items: center; padding: 24px; }
+  #lb img { max-width: 92vw; max-height: 86vh; object-fit: contain; }
+  #lbClose { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: 44px; height: 44px; font-size: 1.6rem; background: var(--gold); color: var(--ink); border: 0; cursor: pointer; }
+  #toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 50; background: var(--ink); color: var(--white); border: 1px solid var(--gold); padding: 12px 18px; max-width: min(520px, 92vw); font-size: .95rem; }
+  #fab { position: fixed; z-index: 45; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--gold); border: 2px solid var(--gold); font-family: var(--display); font-weight: 600; font-size: .9rem; padding: 10px 18px; cursor: pointer; }
+
+  /* scroll animation */
+  .reveal { transition: opacity .7s ease, transform .7s ease; }
+  .reveal.pre { opacity: 0; transform: translateY(20px); }
+
+  @media print {
+    .bar, #fab, #toast, .no-print, .hero-bg, .hero::after, body::before { display: none !important; }
+    .reveal.pre { opacity: 1 !important; transform: none !important; }
+    .hero, .vision, .contact, .facts { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sec { padding-block: 28px; }
+    .card, .tl li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="in">
+    <a class="brand" href="#home"><b></b>THANWA</a>
+    <button id="menu" type="button" aria-expanded="false" aria-controls="nav">เมนู</button>
+    <nav id="nav" aria-label="เมนูหลัก">
+      <ul>
+        <li><a href="#home">หน้าแรก</a></li>
+        <li><a href="#about">เกี่ยวกับฉัน</a></li>
+        <li><a href="#education">การศึกษา</a></li>
+        <li><a href="#activities">กิจกรรม</a></li>
+        <li><a href="#certificates">เกียรติบัตร</a></li>
+        <li><a href="#skills">ทักษะ</a></li>
+        <li><a href="#vision">วิสัยทัศน์</a></li>
+        <li><a href="#contact">ติดต่อ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <svg class="hero-bg" id="heroBg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M60 0H0V60" fill="none" stroke="#ffffff" stroke-opacity=".07" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="700" fill="url(#grid)"/>
+      <g id="bars" fill="#ffffff" fill-opacity=".06"></g>
+      <path d="M0 610 C 200 600, 300 565, 450 520 S 700 400, 850 330 S 1050 190, 1200 110 L1200 700 L0 700 Z" fill="#F4C542" fill-opacity=".07"/>
+      <g id="candles" opacity=".6"></g>
+      <path class="growth" pathLength="1" d="M0 610 C 200 600, 300 565, 450 520 S 700 400, 850 330 S 1050 190, 1200 110" fill="none" stroke="#F4C542" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <div class="in">
+      <div>
+        <p class="meta">ชั้นมัธยมศึกษาปีที่ 6/13 เลขที่ 16 &nbsp;|&nbsp; <span>เป้าหมาย: คณะบริหารธุรกิจ</span></p>
+        <h1><span class="hi">HELLO, I'M</span><span class="nm">THANWA</span></h1>
+        <p class="th-name">นายธันวา อินทวิมล</p>
+        <p class="role">Future Business Leader</p>
+        <p class="tag">เปลี่ยนเเปลงธุรกิจ พัฒนาชีวิตคนไทย</p>
+        <div class="btns">
+          <a class="btn" href="#about">Explore My Portfolio</a>
+          <button class="btn ghost" type="button" id="dl">Download Portfolio</button>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="photo-in">
+          <svg id="avatarPh" viewBox="0 0 200 250" aria-label="ยังไม่มีรูปโปรไฟล์" role="img">
+            <rect width="200" height="250" fill="#3b3b3e"/>
+            <circle cx="100" cy="95" r="40" fill="#5a5a5f"/>
+            <path d="M20 250 C 20 175, 60 150, 100 150 S 180 175, 180 250 Z" fill="#5a5a5f"/>
+          </svg>
+          <img id="avatar" alt="รูปโปรไฟล์ นายธันวา อินทวิมล" hidden>
+          <div class="photo-actions no-print">
+            <label class="addbtn">+ เลือกไฟล์รูป<input id="pf" class="sr" type="file" accept="image/*"></label>
+            <button type="button" id="pfUrl" class="addbtn sec-btn">https://drive.google.com/file/d/1jyy6NFv6aZvQ4tpCK63zp2-s7Gerbawb/view?usp=drive_link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="sec">
+    <div class="in">
+      <p class="eyebrow reveal">About Me</p>
+      <h2 class="reveal">เกี่ยวกับฉัน</h2>
+      <div class="about">
+        <dl class="facts reveal">
+          <dt>ชื่อ</dt><dd>นายธันวา อินทวิมล</dd>
+          <dt>ชั้น</dt><dd>มัธยมศึกษาปีที่ 6/13</dd>
+          <dt>เลขที่</dt><dd>16</dd>
+          <dt>เป้าหมาย</dt><dd>คณะบริหารธุรกิจ</dd>
+        </dl>
+        <div class="about-blocks">
+          <div class="card reveal"><h3>ประวัติส่วนตัว<small>Profile</small></h3><p><span class="ph" data-edit>[กรอกประวัติส่วนตัวของคุณ]</span></p></div>
+          <div class="card reveal"><h3>ความสามารถ<small>Strengths</small></h3><p><span class="ph" data-edit>[กรอกความสามารถของคุณ]</span></p></div>
+          <div class="card reveal"><h3>ความสนใจ<small>Interests</small></h3><p><span class="ph" data-edit>[กรอกสิ่งที่คุณสนใจ]</span></p></div>
+          <div class="card reveal"><h3>เป้าหมายในอนาคต<small>Future Goals</small></h3><p><span class="ph" data-edit>[กรอกเป้าหมายในอนาคต]</span></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education" class="sec alt">
+    <div class="in">
+      <p class="eyebrow reveal">Education</p>
+      <h2 class="reveal">ประวัติการศึกษา</h2>
+      <ul class="tl">
+        <li class="now reveal">
+          <div class="when">ปัจจุบัน</div>
+          <h3>มัธยมศึกษาปีที่ 6/13</h3>
+          <p><span class="ph" data-edit>[กรอกชื่อโรงเรียนและรายละเอียด]</span></p>
+        </li>
+        <li class="reveal">
+          <div class="when"><span class="ph" data-edit>[ปี - ปี]</span></div>
+          <h3>มัธยมศึกษาตอนต้น</h3>
+          <p><span class="ph" data-edit>[กรอกชื่อโรงเรียนและรายละเอียด]</span></p>
+        </li>
+        <li class="reveal">
+          <div class="when"><span class="ph" data-edit>[ปี - ปี]</span></div>
+          <h3>ประถมศึกษา</h3>
+          <p><span class="ph" data-edit>[กรอกชื่อโรงเรียนและรายละเอียด]</span></p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="activities" class="sec">
+    <div class="in">
+      <p class="eyebrow reveal">Activities &amp; Experiences</p>
+      <h2 class="reveal">กิจกรรมและประสบการณ์</h2>
+      <div class="grid2">
+        <div class="card reveal">
+          <h3>กิจกรรมโรงเรียน<small>School Activities</small></h3>
+          <p><span class="ph" data-edit>[กรอกกิจกรรมที่เข้าร่วมจริง]</span></p>
+          <div class="gal" data-gal="act1" data-alt="รูปกิจกรรมโรงเรียน" data-empty="ยังไม่มีรูปกิจกรรม">
+            <div class="gal-grid"></div>
+            <div class="img-actions no-print">
+              <label class="addbtn">+ เพิ่มรูปจากเครื่อง<input class="sr" type="file" accept="image/*" multiple></label>
+              <button type="button" class="addbtn sec-btn add-url">วางลิงก์รูป</button>
+            </div>
+          </div>
+        </div>
+        <div class="card reveal">
+          <h3>การทำงานเป็นทีม<small>Teamwork</small></h3>
+          <p><span class="ph" data-edit>[กรอกประสบการณ์ทำงานเป็นทีมจริง]</span></p>
+          <div class="gal" data-gal="act2" data-alt="รูปกิจกรรมทำงานเป็นทีม" data-empty="ยังไม่มีรูปกิจกรรม">
+            <div class="gal-grid"></div>
+            <div class="img-actions no-print">
+              <label class="addbtn">+ เพิ่มรูปจากเครื่อง<input class="sr" type="file" accept="image/*" multiple></label>
+              <button type="button" class="addbtn sec-btn add-url">วางลิงก์รูป</button>
+            </div>
+          </div>
+        </div>
+        <div class="card reveal">
+          <h3>ภาวะผู้นำ<small>Leadership</small></h3>
+          <p><span class="ph" data-edit>[กรอกประสบการณ์ความเป็นผู้นำจริง]</span></p>
+          <div class="gal" data-gal="act3" data-alt="รูปกิจกรรมภาวะผู้นำ" data-empty="ยังไม่มีรูปกิจกรรม">
+            <div class="gal-grid"></div>
+            <div class="img-actions no-print">
+              <label class="addbtn">+ เพิ่มรูปจากเครื่อง<input class="sr" type="file" accept="image/*" multiple></label>
+              <button type="button" class="addbtn sec-btn add-url">วางลิงก์รูป</button>
+            </div>
+          </div>
+        </div>
+        <div class="card reveal">
+          <h3>กิจกรรมจิตอาสา<small>Volunteer</small></h3>
+          <p><span class="ph" data-edit>[กรอกกิจกรรมจิตอาสาจริง]</span></p>
+          <div class="gal" data-gal="act4" data-alt="รูปกิจกรรมจิตอาสา" data-empty="ยังไม่มีรูปกิจกรรม">
+            <div class="gal-grid"></div>
+            <div class="img-actions no-print">
+              <label class="addbtn">+ เพิ่มรูปจากเครื่อง<input class="sr" type="file" accept="image/*" multiple></label>
+              <button type="button" class="addbtn sec-btn add-url">วางลิงก์รูป</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates" class="sec alt">
+    <div class="in">
+      <p class="eyebrow reveal">Certificates &amp; Achievements</p>
+      <h2 class="reveal">เกียรติบัตรและรางวัล</h2>
+      <div class="cert reveal">
+        <p class="hint">คลิกที่รูปเพื่อขยาย เพิ่มได้ทั้งไฟล์จากเครื่องและลิงก์รูปภาพ</p>
+        <div class="gal" data-gal="cert" data-alt="เกียรติบัตร" data-empty="ยังไม่มีเกียรติบัตร กดปุ่มด้านล่างเพื่อเพิ่มรูปเกียรติบัตรหรือรางวัลจริง">
+          <div class="gal-grid"></div>
+          <div class="img-actions no-print">
+            <label class="addbtn">+ เพิ่มเกียรติบัตรจากเครื่อง<input class="sr" type="file" accept="image/*" multiple></label>
+            <button type="button" class="addbtn sec-btn add-url">วางลิงก์เกียรติบัตร</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="sec">
+    <div class="in">
+      <p class="eyebrow reveal">Business Skills</p>
+      <h2 class="reveal">ทักษะด้านธุรกิจ</h2>
+      <div class="skills">
+        <div class="card skill reveal"><h3>Leadership</h3><p class="thai">ภาวะผู้นำ</p><p><span data-edit>นำทีมและตัดสินใจเพื่อให้งานบรรลุเป้าหมาย</span></p></div>
+        <div class="card skill reveal"><h3>Communication</h3><p class="thai">การสื่อสาร</p><p><span data-edit>ถ่ายทอดความคิดให้ชัดเจนและโน้มน้าวผู้อื่นได้</span></p></div>
+        <div class="card skill reveal"><h3>Teamwork</h3><p class="thai">การทำงานเป็นทีม</p><p><span data-edit>ร่วมมือกับผู้อื่นและเคารพความแตกต่างของแต่ละคน</span></p></div>
+        <div class="card skill reveal"><h3>Entrepreneurship</h3><p class="thai">ความเป็นผู้ประกอบการ</p><p><span data-edit>มองเห็นโอกาสและกล้าริเริ่มสิ่งใหม่</span></p></div>
+        <div class="card skill reveal"><h3>Marketing</h3><p class="thai">การตลาด</p><p><span data-edit>เข้าใจความต้องการของลูกค้าและการสร้างคุณค่าให้สินค้า</span></p></div>
+        <div class="card skill reveal"><h3>Problem Solving</h3><p class="thai">การแก้ปัญหา</p><p><span data-edit>วิเคราะห์ปัญหาและหาทางออกอย่างเป็นระบบ</span></p></div>
+        <div class="card skill reveal"><h3>Financial Literacy</h3><p class="thai">ความรู้ทางการเงิน</p><p><span data-edit>เข้าใจการออม การลงทุน และการบริหารเงิน</span></p></div>
+        <div class="card skill reveal"><h3>Digital Skills</h3><p class="thai">ทักษะดิจิทัล</p><p><span data-edit>ใช้เทคโนโลยีและเครื่องมือออนไลน์ให้งานมีประสิทธิภาพ</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vision" class="sec vision">
+    <svg class="deco" viewBox="0 0 520 300" aria-hidden="true">
+      <g fill="#ffffff"><rect x="20" y="220" width="50" height="80"/><rect x="95" y="190" width="50" height="110"/><rect x="170" y="150" width="50" height="150"/><rect x="245" y="120" width="50" height="180"/><rect x="320" y="70" width="50" height="230"/><rect x="395" y="20" width="50" height="280"/></g>
+    </svg>
+    <div class="in">
+      <p class="eyebrow reveal">My Business Vision</p>
+      <h2 class="reveal">MY VISION,<span>MY FUTURE</span></h2>
+      <p class="lead reveal"><span class="ph" data-edit>[เขียนวิสัยทัศน์ด้านธุรกิจของคุณ ความฝัน และแนวคิดในการเป็นนักธุรกิจในอนาคต]</span></p>
+      <div class="vision-cols">
+        <div class="reveal"><h3>ความฝัน</h3><p><span class="ph" data-edit>[กรอกความฝันของคุณ]</span></p></div>
+        <div class="reveal"><h3>เป้าหมาย</h3><p><span class="ph" data-edit>[กรอกเป้าหมายของคุณ]</span></p></div>
+        <div class="reveal"><h3>แนวคิดของนักธุรกิจ</h3><p><span class="ph" data-edit>[กรอกแนวคิดทางธุรกิจของคุณ]</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="sec contact">
+    <div class="in">
+      <p class="eyebrow reveal">Contact</p>
+      <h2 class="reveal">ติดต่อ</h2>
+      <dl class="rows">
+        <div class="reveal"><dt>Email</dt><dd><span class="ph" data-edit>[กรอกอีเมล]</span></dd></div>
+        <div class="reveal"><dt>Facebook</dt><dd><span class="ph" data-edit>[กรอกชื่อหรือลิงก์ Facebook]</span></dd></div>
+        <div class="reveal"><dt>Instagram</dt><dd><span class="ph" data-edit>[กรอกชื่อบัญชี Instagram]</span></dd></div>
+        <div class="reveal"><dt>LINE</dt><dd><span class="ph" data-edit>[กรอก LINE ID]</span></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer><div class="in">&copy; 2026 นายธันวา อินทวิมล | ม.6/13 เลขที่ 16 | E-Portfolio</div></footer>
+
+<button id="fab" class="no-print" type="button">แก้ไขข้อความ</button>
+<div id="toast" role="status" hidden></div>
+<div id="lb" role="dialog" aria-modal="true" aria-label="ดูรูปขยาย" hidden>
+  <button id="lbClose" type="button" aria-label="ปิด">&times;</button>
+  <img id="lbImg" alt="">
+</div>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var P = "thanwa:";
+  function load(k, d) { try { var v = localStorage.getItem(P + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(P + k, JSON.stringify(v)); } catch (e) {} }
+
+  /* convert Google Drive share link to direct image link */
+  function normalizeImgUrl(url) {
+    if (!url) return "";
+    url = url.trim();
+    var m = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+    if (!m) m = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+    if (m && m[1]) {
+      return "https://lh3.googleusercontent.com/d/" + m[1];
+    }
+    return url;
+  }
+
+  /* hero chart: candlesticks and rising bars */
+  var cs = [[500,480,470,510],[480,495,465,505],[490,460,450,500],[455,470,440,478],[465,430,422,472],[430,445,415,452],[440,405,398,448],[400,418,385,425],[412,372,365,418],[370,385,350,392],[380,340,332,386],[335,352,318,358],[345,305,298,350],[300,318,280,324]];
+  var h = "";
+  cs.forEach(function (c, i) {
+    var x = 540 + i * 44, up = c[1] < c[0], col = up ? "#F4C542" : "#B5121B";
+    h += '<line x1="' + x + '" x2="' + x + '" y1="' + c[2] + '" y2="' + c[3] + '" stroke="' + col + '" stroke-width="2"/>' +
+         '<rect x="' + (x - 9) + '" y="' + Math.min(c[0], c[1]) + '" width="18" height="' + Math.max(4, Math.abs(c[0] - c[1])) + '" fill="' + col + '"/>';
+  });
+  $("#candles").innerHTML = h;
+  var b = "";
+  [60, 90, 120, 100, 150, 180, 220].forEach(function (v, i) { b += '<rect x="' + (600 + i * 78) + '" y="' + (700 - v) + '" width="44" height="' + v + '"/>'; });
+  $("#bars").innerHTML = b;
+
+  /* nav */
+  var menu = $("#menu"), nav = $("#nav");
+  menu.addEventListener("click", function () { var o = nav.classList.toggle("open"); menu.setAttribute("aria-expanded", String(o)); });
+  $$("#nav a").forEach(function (a) { a.addEventListener("click", function () { nav.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); }); });
+
+  /* image helper */
+  function shrink(file, max, q) {
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () {
+        var im = new Image();
+        im.onload = function () {
+          var s = Math.min(1, max / Math.max(im.width, im.height));
+          var c = document.createElement("canvas");
+          c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+          var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height);
+          x.drawImage(im, 0, 0, c.width, c.height);
+          res(c.toDataURL("image/jpeg", q));
+        };
+        im.onerror = rej; im.src = r.result;
+      };
+      r.onerror = rej; r.readAsDataURL(file);
+    });
+  }
+
+  /* toast helper */
+  var toastEl = $("#toast"), tt;
+  function toast(m) { toastEl.textContent = m; toastEl.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toastEl.hidden = true; }, 6000); }
+
+  /* profile photo */
+  var av = $("#avatar"), avPh = $("#avatarPh");
+  function setAv(src, notifyErr) {
+    av.onload = function () { av.hidden = false; avPh.hidden = true; };
+    av.onerror = function () {
+      av.hidden = true; avPh.hidden = false;
+      if (notifyErr) toast("โหลดรูปไม่สำเร็จ กรุณาตรวจสอบลิงก์หรือสิทธิ์การแชร์ (ต้องตั้งเป็น ทุกคนที่มีลิงก์สามารถดูได้)");
+    };
+    av.src = src;
+  }
+  setAv(load("profile", null) || "images/profile.jpg", false);
+  $("#pf").addEventListener("change", function (e) {
+    var f = e.target.files[0]; if (!f) return;
+    shrink(f, 900, 0.85).then(function (d) { save("profile", d); setAv(d, true); });
+  });
+  $("#pfUrl").addEventListener("click", function () {
+    var u = prompt("วางลิงก์รูปโปรไฟล์ (URL หรือลิงก์แชร์ Google Drive):");
+    if (!u || !u.trim()) return;
+    var clean = normalizeImgUrl(u);
+    save("profile", clean);
+    setAv(clean, true);
+  });
+
+  /* galleries + lightbox */
+  var lb = $("#lb"), lbImg = $("#lbImg");
+  function openLb(s, a) { lbImg.src = s; lbImg.alt = a; lb.hidden = false; $("#lbClose").focus(); }
+  function closeLb() { lb.hidden = true; lbImg.removeAttribute("src"); }
+  lb.addEventListener("click", function (e) { if (e.target !== lbImg) closeLb(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) closeLb(); });
+
+  $$(".gal").forEach(function (g) {
+    var id = g.getAttribute("data-gal"), grid = $(".gal-grid", g), inp = $("input", g), urlBtn = $(".add-url", g), items = load("gal:" + id, []);
+    function render() {
+      grid.innerHTML = "";
+      if (!items.length) {
+        var e = document.createElement("div"); e.className = "gal-empty"; e.textContent = g.getAttribute("data-empty");
+        grid.appendChild(e); return;
+      }
+      items.forEach(function (src, i) {
+        var f = document.createElement("figure"), im = document.createElement("img");
+        im.src = src; im.alt = g.getAttribute("data-alt") + " " + (i + 1);
+        im.addEventListener("click", function () { openLb(src, im.alt); });
+        var x = document.createElement("button");
+        x.type = "button"; x.className = "rm no-print"; x.setAttribute("aria-label", "ลบรูปนี้"); x.textContent = "×";
+        x.addEventListener("click", function () { items.splice(i, 1); save("gal:" + id, items); render(); });
+        f.appendChild(im); f.appendChild(x); grid.appendChild(f);
+      });
+    }
+    inp.addEventListener("change", function () {
+      var fs = Array.prototype.slice.call(inp.files);
+      Promise.all(fs.map(function (f) { return shrink(f, 1000, 0.78); })).then(function (arr) {
+        items = items.concat(arr); save("gal:" + id, items); render(); inp.value = "";
+      });
+    });
+    if (urlBtn) {
+      urlBtn.addEventListener("click", function () {
+        var u = prompt("วางลิงก์รูปภาพ (URL หรือลิงก์แชร์ Google Drive):");
+        if (!u || !u.trim()) return;
+        items.push(normalizeImgUrl(u));
+        save("gal:" + id, items);
+        render();
+      });
+    }
+    render();
+  });
+
+  /* edit text mode */
+  var eds = $$("[data-edit]"), saved = load("text", {});
+  function mark(el) { el.classList.toggle("ph", /^\s*\[/.test(el.textContent)); }
+  eds.forEach(function (el, i) { if (saved[i] != null) el.textContent = saved[i]; mark(el); });
+  var fab = $("#fab"), editing = false;
+  fab.addEventListener("click", function () {
+    editing = !editing;
+    document.body.classList.toggle("editing", editing);
+    eds.forEach(function (el) {
+      if (editing) {
+        el.setAttribute("contenteditable", "plaintext-only");
+        if (el.contentEditable !== "plaintext-only") el.setAttribute("contenteditable", "true");
+      } else { el.removeAttribute("contenteditable"); }
+    });
+    if (!editing) {
+      var s = {};
+      eds.forEach(function (el, i) { s[i] = el.textContent.trim(); mark(el); });
+      save("text", s);
+    }
+    fab.textContent = editing ? "บันทึกข้อความ" : "แก้ไขข้อความ";
+  });
+
+  /* download as PDF (browser print dialog) */
+  $("#dl").addEventListener("click", function () {
+    toast("เลือก \"บันทึกเป็น PDF\" ที่ปลายทางในหน้าต่างพิมพ์ ถ้าหน้าต่างไม่ขึ้น ให้กด Ctrl+P");
+    setTimeout(function () { try { window.print(); } catch (e) {} }, 300);
+  });
+
+  /* scroll animation */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove("pre"); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    $$(".reveal").forEach(function (el) {
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("pre"); io.observe(el); }
+    });
+  }
+})();
+</script>
+</body>
+</html>
